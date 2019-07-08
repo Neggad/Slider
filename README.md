@@ -1,2 +1,2 @@
 # Slider
-A Slider in Javascript
+A Testimonial Slider in Vanilla Javascript

@@ -1,4 +1,5 @@
 var display = [0, 1, 2]
+//https://freefrontend.com/css-carousels/
 var numberOfPersons = 5;
 const generateUsers = () => {
   //call API and create slides and buttons after

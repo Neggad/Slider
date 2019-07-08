@@ -1,0 +1,32 @@
+body{
+  display:flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+}
+.slide{
+  border: 1px solid black;
+  min-width: 33.33%;
+}
+#sliderContainer{
+  display:flex;
+  flex-direction: row;
+
+  justify-content: center;
+  width:100%;
+  border: 1px solid red;
+  overflow:hidden;
+}
+#buttonContainer{
+  background-color: blue;
+  width:100%;
+  display:flex;
+  flex-direction: row;
+
+  justify-content: center;
+}
+.button{
+  background-color: white;
+  border: 1px solid orange;
+  margin:2px;
+}

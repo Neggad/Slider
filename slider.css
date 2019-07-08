@@ -30,3 +30,12 @@ body{
   border: 1px solid orange;
   margin:2px;
 }
+.invisible{
+  display:none;
+}
+.redTest{
+  background-color: red;
+}
+.test{
+  border: 1px solid orange;
+}

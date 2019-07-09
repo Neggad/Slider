@@ -1,8 +1,10 @@
-var currentSliderIds = [0, 1, 2];
+//The slider ids and where they are positioned
 var sliderIdAndPos = [];
-var allSliders = [];
-//https://freefrontend.com/css-carousels/
+//The fetched persons with relevant data
+const allPersons = [];
+//The number of persons fetched
 var numberOfPersons = 0;
+
 const generateUsers = () => {
   //call API and create slides and buttons after
   getUsers
@@ -21,27 +23,27 @@ const generateUsers = () => {
     })
 }
 const createSlide = (person, index) => {
-  //Parent container for slides
-  let currentdiv = document.getElementById('sliderContainer');
-  //create div for person
-  // let newDiv = document.createElement("div");
-  // newDiv.id = "slider_" + index;
-  // allSliders.push(index);
-  // newDiv.className = 'slide';
-
+  let slideContent = document.createTextNode(person.name.first + " " + person.name.last);
+  let slideImage = document.createElement("img");
+  slideImage.src = person.picture.large;
   if (index === 0) {
-    let firstDiv = document.getElementById("slider_1");
+    let firstDiv = document.getElementById("slider_0");
     firstDiv.className = 'slide';
+    firstDiv.appendChild(slideContent);
+    firstDiv.appendChild(slideImage)
   }
   if (index === 1) {
-    let secondDiv = document.getElementById("slider_2");
+    let secondDiv = document.getElementById("slider_1");
     secondDiv.className = 'slide';
+    secondDiv.appendChild(slideContent);
+    secondDiv.appendChild(slideImage)
   }
   if (index === 2) {
-    let thirdDiv = document.getElementById("slider_3");
+    let thirdDiv = document.getElementById("slider_2");
     thirdDiv.className = 'slide';
+    thirdDiv.appendChild(slideContent);
+    thirdDiv.appendChild(slideImage)
   }
-  // newDiv.className += ' invisible';
 
 
   //test
@@ -52,29 +54,41 @@ const createSlide = (person, index) => {
   testDiv.className = "test"
   testContent.appendChild(testDiv);
 
-  //set content of said div
-  let newContent = document.createTextNode(person.name.first + " " + person.name.last);
-  newDiv.appendChild(newContent);
-
-  currentdiv.append(newDiv);
-
-  sliderIdAndPos.push({ pos: index, id: index })
+  //create array object of the data
+  allPersons.push({
+    name: person.name.first + " " + person.name.last,
+    img: {
+      large: person.picture.large,
+      medium: person.picture.medium,
+      thumbnail: person.picture.thumbnail
+    },
+    phone: person.phone,
+    email: person.email,
+    id: index,
+    showing: index < 3 ? true : false
+  })
+  console.log(allPersons);
+  sliderIdAndPos.push({ sliderPos: index, sliderId: index })
 }
 const createButton = (index) => {
   //Parent container for buttons
   let buttonContainer = document.getElementById('buttonContainer');
   //create button for div
   let newButton = document.createElement("div");
-  newButton.className = 'button';
-  let newButtonContent = document.createTextNode(index);
-  newButton.appendChild(newButtonContent);
+  newButton.classList.add('allDotButtons');
+  if (index < 3) {
+    newButton.classList.add('isActive');
+  } else {
+    newButton.classList.add('isInactive');
+  }
+  newButton.id = "dot_" + index;
   buttonContainer.appendChild(newButton);
 }
 
 const createArrowBtn = (dir) => {
   let buttonContainer = document.getElementById('buttonContainer');
   let dirButton = document.createElement("div");
-  dirButton.className = 'button';
+  dirButton.className = 'allButtons';
   let dirButtonContent = '';
   dirButton.onclick = () => goTo(dir);
 
@@ -86,67 +100,95 @@ const createArrowBtn = (dir) => {
   buttonContainer.appendChild(dirButton);
 }
 
+const addSlideContent = (currentSlide, person) => {
+  let slideContent = document.createTextNode(person.name);
+  let slideImage = document.createElement("img");
+  slideImage.src = person.img.large;
+  currentSlide.appendChild(slideImage)
+  currentSlide.appendChild(slideContent);
+}
+
+
 const toggleSliders = (sliders) => {
-  console.log("SLIDERS", sliders)
-  for (let i = 0; i < sliders.length; i++) {
-    let currentSlider = document.getElementById("slider_" + sliders[i].id);
-    console.log("slider at i:", sliders[i])
-    // console.log("sliders.contains(allSliders[i])", sliders.contains(allSliders[i]))
-    if (sliders[i].pos < 3) {
-      console.log("slider is inside of visible area:", sliders[i])
-      if (currentSlider.classList.contains("invisible")) {
-        console.log("show current slider:", "slider_" + sliders[i])
-        currentSlider.classList.remove("invisible")
-      }
+  for (let i = 0; i < 3; i++) {
+    let slider = sliders[i].sliderPos;
+    let currentSlide = document.getElementById("slider_" + i);
+    currentSlide.innerHTML = "";
+
+    let person = getPersonWithId(slider)
+    addSlideContent(currentSlide, person);
+    // let textContent = document.createTextNode(person.name);
+    person.showing = true;
+    // currentSlide.appendChild(textContent);
+
+  }
+}
+
+const setShowToFalse = () => {
+  for (let i = 0; i < allPersons.length; i++) {
+    allPersons[i].showing = false;
+  }
+}
+
+const resetDotClasses = () => {
+
+}
+const getPersonWithId = (id) => {
+  return allPersons.find((person) => {
+    return person.id === id;
+  })
+}
+const toggleDots = () => {
+  let activePersons = allPersons.filter((person) => {
+    return person.showing
+  })
+  let inactivePersons = allPersons.filter((person) => {
+    return !person.showing
+  })
+
+
+  for (let i = 0; i < activePersons.length; i++) {
+    let currentDot = document.getElementById("dot_" + activePersons[i].id);
+    if (!currentDot.classList.contains("isActive")) {
+      currentDot.classList.add("isActive")
+      currentDot.classList.remove("isInactive")
     }
-    else {
-      if (!currentSlider.classList.contains("invisible")) {
-        currentSlider.classList.add("invisible")
-      }
+  }
+  for (let i = 0; i < inactivePersons.length; i++) {
+    let currentDot = document.getElementById("dot_" + inactivePersons[i].id);
+    if (currentDot.classList.contains("isActive")) {
+      currentDot.classList.add("isInactive")
+      currentDot.classList.remove("isActive")
     }
   }
 }
 const goTo = (dir) => {
   if (dir === 'left') {
     for (let i = 0; i < sliderIdAndPos.length; i++) {
-      if (sliderIdAndPos[i].pos === 0) {
-        sliderIdAndPos[i].pos = numberOfPersons - 1;
+      if (sliderIdAndPos[i].sliderPos === 0) {
+        sliderIdAndPos[i].sliderPos = numberOfPersons - 1;
       }
       else {
-        sliderIdAndPos[i].pos = sliderIdAndPos[i].pos - 1;
+        sliderIdAndPos[i].sliderPos = sliderIdAndPos[i].sliderPos - 1;
       }
     }
-    // for (let i = 0; i < currentSliderIds.length; i++) {
-    //   if (currentSliderIds[i] === 0) {
-    //     currentSliderIds[i] = numberOfPersons-1;
-    //   }
-    //   else {
-    //     currentSliderIds[i] = currentSliderIds[i] - 1;
-    //   }
-    // }
   }
   else {
     for (let i = 0; i < sliderIdAndPos.length; i++) {
-      if (sliderIdAndPos[i].pos === numberOfPersons - 1) {
-        sliderIdAndPos[i].pos = 0;
+      if (sliderIdAndPos[i].sliderPos === numberOfPersons - 1) {
+        sliderIdAndPos[i].sliderPos = 0;
       }
       else {
-        sliderIdAndPos[i].pos = sliderIdAndPos[i].pos + 1;
+        sliderIdAndPos[i].sliderPos = sliderIdAndPos[i].sliderPos + 1;
       }
     }
-    // for (let i = 0; i < currentSliderIds.length; i++) {
-    //   if (currentSliderIds[i] === numberOfPersons-1) {
-    //     currentSliderIds[i] = 0;
-    //   }
-    //   else {
-    //     currentSliderIds[i] = currentSliderIds[i] + 1;
-    //   }
-    // }
   }
-
+  setShowToFalse();
   toggleSliders(sliderIdAndPos);
   console.log("sliderIdAndPos:", sliderIdAndPos)
+  console.log("allPersons:", allPersons)
   console.log("go to:", dir)
+  toggleDots();
 }
 
 generateUsers();

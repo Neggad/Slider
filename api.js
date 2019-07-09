@@ -1,6 +1,6 @@
 const getUsers = new Promise(
   function (resolve, reject) {
-    fetch('https://randomuser.me/api/?results=5')
+    fetch('https://randomuser.me/api/?results=10')
       .then(function (response) {
         return response.json();
       })

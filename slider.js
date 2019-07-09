@@ -24,13 +24,25 @@ const createSlide = (person, index) => {
   //Parent container for slides
   let currentdiv = document.getElementById('sliderContainer');
   //create div for person
-  let newDiv = document.createElement("div");
-  newDiv.id = "slider_" + index;
-  allSliders.push(index);
-  newDiv.className = 'slide';
-  if (index > 2) {
-    newDiv.className += ' invisible';
+  // let newDiv = document.createElement("div");
+  // newDiv.id = "slider_" + index;
+  // allSliders.push(index);
+  // newDiv.className = 'slide';
+
+  if (index === 0) {
+    let firstDiv = document.getElementById("slider_1");
+    firstDiv.className = 'slide';
   }
+  if (index === 1) {
+    let secondDiv = document.getElementById("slider_2");
+    secondDiv.className = 'slide';
+  }
+  if (index === 2) {
+    let thirdDiv = document.getElementById("slider_3");
+    thirdDiv.className = 'slide';
+  }
+  // newDiv.className += ' invisible';
+
 
   //test
   let testDiv = document.createElement("div");

@@ -1,3 +1,4 @@
+
 //The slider ids and where they are positioned
 var sliderIdAndPos = [];
 //The fetched persons with relevant data
@@ -76,7 +77,7 @@ const createButton = (index) => {
 const createArrowBtn = (dir) => {
   let buttonContainer = document.getElementById('buttonContainer');
   let dirButton = document.createElement("div");
-  dirButton.className = 'allButtons';
+  dirButton.className = 'arrowButtons';
   let dirButtonContent = '';
   dirButton.onclick = () => goTo(dir);
 
@@ -102,6 +103,7 @@ const addSlideContent = (currentSlide, person) => {
   let slideInfoContainer = document.createElement("div");
   slideInfoContainer.className = "slideInfoContainer";
   let infoContent = "";
+
   switch (person.selectedInfo) {
     case "email": {
       infoContent = document.createTextNode(person.email);
@@ -128,20 +130,32 @@ const addSlideContent = (currentSlide, person) => {
   //buttons to select phone number mail etc
   let slideButtonContainer = document.createElement("div");
   slideButtonContainer.className = "slideButtonContainer";
+  //Email Button
   let emailButton = document.createElement("div");
-  let emailButtonContent = document.createTextNode("E");
+  let emailButtonContent = document.createTextNode("📧");
+
   emailButton.className = "infoBtn";
   emailButton.value = "email";
   emailButton.appendChild(emailButtonContent);
-  emailButton.onclick = () => changeSelectedInfo(person);
+  emailButton.onclick = () => changeSelectedInfo(person, currentSlide);
+  //Phone button
   let phoneButton = document.createElement("div");
-  let phoneButtonContent = document.createTextNode("P");
+  let phoneButtonContent = document.createTextNode("📱");
   phoneButton.className = "infoBtn";
   phoneButton.value = "phone";
   phoneButton.appendChild(phoneButtonContent);
-  phoneButton.onclick = () => changeSelectedInfo(person);
+  phoneButton.onclick = () => changeSelectedInfo(person, currentSlide);
+  //City Button
+  let cityButton = document.createElement("div");
+  let cityButtonContent = document.createTextNode("🏠");
+  cityButton.className = "infoBtn";
+  cityButton.value = "city";
+  cityButton.appendChild(cityButtonContent);
+  cityButton.onclick = () => changeSelectedInfo(person, currentSlide);
+
   slideButtonContainer.appendChild(emailButton);
   slideButtonContainer.appendChild(phoneButton);
+  slideButtonContainer.appendChild(cityButton);
 
   currentSlide.appendChild(slideImage)
   currentSlide.appendChild(slideNameContainer);
@@ -149,10 +163,10 @@ const addSlideContent = (currentSlide, person) => {
   currentSlide.appendChild(slideButtonContainer);
 }
 
-const changeSelectedInfo = (person) => {
+const changeSelectedInfo = (person, currentSlide) => {
   console.log("change selected of ", person)
   console.log("clicked:", event.current)
-  let currentSlide = document.getElementById("slider_" + person.id);
+  // let currentSlide = document.getElementById("slider_" + person.id);
   currentSlide.innerHTML = "";
 
   console.log("clicked:", event.target.value, "person:", person)
@@ -164,7 +178,6 @@ const changeSelectedInfo = (person) => {
     }
     case "phone": {
       if (person.selectedInfo !== "phone") {
-        console.log("phone=?")
         person.selectedInfo = "phone";
       }
       break;

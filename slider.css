@@ -1,8 +1,6 @@
 body{
   display:flex;
   flex-direction: column;
-  /* align-content: center;
-  justify-content: center; */
 }
 .moduleContainer{
   width:100%;
@@ -13,7 +11,6 @@ body{
   background-color:rgb(235, 235, 235);
 }
 .slide{
-
   width: 33.33%;
   height: 300px;
   display:flex;
@@ -23,6 +20,16 @@ body{
   background-color:white;
   border-radius: 5px;
   margin:10px;
+  font-family: "Courier";
+}
+.infoBtn.selectedBtn{
+  color:rgb(255, 142, 142);
+  background-color: whitesmoke;
+  border-radius: 20px;
+  border-bottom: 1px solid grey;
+  border-right:1px solid grey;
+  font-weight: bold;
+
 }
 .slideImg{
   border-radius: 150px;
@@ -39,16 +46,29 @@ body{
   display:flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   width:100%;
-  height: 30px;
+  height: 50px;
+
+  
 }
 .infoBtn{
-  margin:5px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin:0 10px;
+  min-width: 40px;
+  min-height: 40px;
   cursor: pointer;
+  text-align: center;
+  color: rgb(197, 197, 197);
 }
 .slideInfoContainer{
   width:100%;
   height: 30px;
+  text-align: center;
+  font-family: "Courier New";
 }
 #buttonContainer{
   width:90%;
@@ -84,5 +104,5 @@ body{
 }
 .isInactive{
   
-  background-color: grey;
+  background-color: rgb(180, 180, 180);
 }

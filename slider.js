@@ -104,21 +104,53 @@ const addSlideContent = (currentSlide, person) => {
   slideInfoContainer.className = "slideInfoContainer";
   let infoContent = "";
 
+  //buttons to select phone number mail etc
+  let slideButtonContainer = document.createElement("div");
+  slideButtonContainer.className = "slideButtonContainer";
+  //Email Button
+  let emailButton = document.createElement("div");
+  let emailButtonContent = document.createTextNode("@");
+
+  emailButton.className = "infoBtn";
+  emailButton.value = "email";
+  emailButton.appendChild(emailButtonContent);
+  emailButton.onclick = () => changeSelectedInfo(person, currentSlide);
+  //Phone button
+  let phoneButton = document.createElement("div");
+  let phoneButtonContent = document.createTextNode("123");
+  phoneButton.className = "infoBtn";
+  phoneButton.value = "phone";
+  phoneButton.appendChild(phoneButtonContent);
+  phoneButton.onclick = () => changeSelectedInfo(person, currentSlide);
+  //City Button
+  let cityButton = document.createElement("div");
+  let cityButtonContent = document.createTextNode("Adr.");
+  cityButton.className = "infoBtn";
+  cityButton.value = "city";
+  cityButton.appendChild(cityButtonContent);
+  cityButton.onclick = () => changeSelectedInfo(person, currentSlide);
+
+
+
   switch (person.selectedInfo) {
     case "email": {
       infoContent = document.createTextNode(person.email);
+      emailButton.classList.add("selectedBtn");
       break;
     }
     case "phone": {
       infoContent = document.createTextNode(person.phone);
+      phoneButton.classList.add("selectedBtn");
       break;
     }
     case "city": {
       infoContent = document.createTextNode(person.location.city + " " + person.location.state);
+      cityButton.classList.add("selectedBtn");
       break;
     }
     default:
       infoContent = document.createTextNode(person.email);
+      emailButton.classList.add("selectedBtn");
       break;
   }
 
@@ -127,31 +159,7 @@ const addSlideContent = (currentSlide, person) => {
   // let stateContent = document.createTextNode(person.location.state);
 
   slideInfoContainer.appendChild(infoContent);
-  //buttons to select phone number mail etc
-  let slideButtonContainer = document.createElement("div");
-  slideButtonContainer.className = "slideButtonContainer";
-  //Email Button
-  let emailButton = document.createElement("div");
-  let emailButtonContent = document.createTextNode("📧");
 
-  emailButton.className = "infoBtn";
-  emailButton.value = "email";
-  emailButton.appendChild(emailButtonContent);
-  emailButton.onclick = () => changeSelectedInfo(person, currentSlide);
-  //Phone button
-  let phoneButton = document.createElement("div");
-  let phoneButtonContent = document.createTextNode("📱");
-  phoneButton.className = "infoBtn";
-  phoneButton.value = "phone";
-  phoneButton.appendChild(phoneButtonContent);
-  phoneButton.onclick = () => changeSelectedInfo(person, currentSlide);
-  //City Button
-  let cityButton = document.createElement("div");
-  let cityButtonContent = document.createTextNode("🏠");
-  cityButton.className = "infoBtn";
-  cityButton.value = "city";
-  cityButton.appendChild(cityButtonContent);
-  cityButton.onclick = () => changeSelectedInfo(person, currentSlide);
 
   slideButtonContainer.appendChild(emailButton);
   slideButtonContainer.appendChild(phoneButton);

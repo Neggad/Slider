@@ -5,19 +5,23 @@ var sliderIdAndPos = [];
 const allPersons = [];
 //The number of persons fetched
 var numberOfPersons = 0;
-
+//Review text
+var reviewTexts = [
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut tellus elementum sagittis vitae et leo duis ut.",
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  "Lorem ipsum dolor sit amet, ut doctus debitis torquatos quo, homero oblique singulis ex pri."]
 const generateUsers = () => {
   //call API and create slides and buttons after
   getUsers
     .then(function (data) {
-      createArrowBtn('left');
+      // createArrowBtn('left');
       console.log("something", data.results)
       numberOfPersons = data.results.length;
       data.results.map((person, index) => {
         createSlide(person, index);
-        createButton(index);
+        createDot(index);
       })
-      createArrowBtn('right');
+      // createArrowBtn('right');
     })
     .then(function () {
 
@@ -36,7 +40,8 @@ const createSlide = (person, index) => {
     email: person.email,
     id: index,
     showing: index < 3 ? true : false,
-    selectedInfo: "email"
+    selectedInfo: "email",
+    reviewShowing: true,
   };
 
   if (index < 3) {
@@ -46,22 +51,20 @@ const createSlide = (person, index) => {
   }
 
   //test
-  let testDiv = document.createElement("div");
+  // let testDiv = document.createElement("div");
 
-  let testContent = document.getElementById("test");
-  testDiv.append(person.name.first + " " + person.name.last)
-  testDiv.className = "test"
-  testContent.appendChild(testDiv);
+  // let testContent = document.getElementById("test");
+  // testDiv.append(person.name.first + " " + person.name.last)
+  // testDiv.className = "test"
+  // testContent.appendChild(testDiv);
 
   //create array object of the data
   allPersons.push(currentPerson);
-
-  console.log(allPersons);
   sliderIdAndPos.push({ sliderPos: index, sliderId: index })
 }
-const createButton = (index) => {
+const createDot = (index) => {
   //Parent container for buttons
-  let buttonContainer = document.getElementById('buttonContainer');
+  let buttonContainer = document.getElementById('dotContainer');
   //create button for div
   let newButton = document.createElement("div");
   newButton.classList.add('allDotButtons');
@@ -74,110 +77,135 @@ const createButton = (index) => {
   buttonContainer.appendChild(newButton);
 }
 
-const createArrowBtn = (dir) => {
-  let buttonContainer = document.getElementById('buttonContainer');
-  let dirButton = document.createElement("div");
-  dirButton.className = 'arrowButtons';
-  let dirButtonContent = '';
-  dirButton.onclick = () => goTo(dir);
+// const createArrowBtn = (dir) => {
+//   let buttonContainer = document.getElementById('buttonContainer');
+//   let dirButton = document.createElement("div");
+//   dirButton.className = 'arrowButtons';
+//   let dirButtonContent = '';
+//   dirButton.onclick = () => goTo(dir);
 
-  dir === 'left' ?
-    dirButtonContent = document.createTextNode("-") :
-    dirButtonContent = document.createTextNode("+");
+//   dir === 'left' ?
+//     dirButton.classList.add("leftButton") :
+//     dirButton.classList.add("rightButton");
 
-  dirButton.appendChild(dirButtonContent);
-  buttonContainer.appendChild(dirButton);
-}
+//   // dirButton.appendChild(dirButtonContent);
+//   buttonContainer.appendChild(dirButton);
+// }
 
 const addSlideContent = (currentSlide, person) => {
   //Container for slider name
-  let slideNameContainer = document.createElement("h3");
+  let nameContainer = document.createElement("span");
   let slideContent = document.createTextNode(person.name);
-  slideNameContainer.className = 'slideName';
-  slideNameContainer.appendChild(slideContent);
+  nameContainer.className = 'slideName';
+  nameContainer.appendChild(slideContent);
   //Slider image
+
   let slideImage = document.createElement("img");
   slideImage.src = person.img.large;
   slideImage.className = "slideImg";
-  //Info container, phone number, mail etc
-  let slideInfoContainer = document.createElement("div");
-  slideInfoContainer.className = "slideInfoContainer";
-  let infoContent = "";
+  //info toggle button
 
-  //buttons to select phone number mail etc
-  let slideButtonContainer = document.createElement("div");
-  slideButtonContainer.className = "slideButtonContainer";
-  //Email Button
-  let emailButton = document.createElement("div");
-  let emailButtonContent = document.createTextNode("@");
-
-  emailButton.className = "infoBtn";
-  emailButton.value = "email";
-  emailButton.appendChild(emailButtonContent);
-  emailButton.onclick = () => changeSelectedInfo(person, currentSlide);
-  //Phone button
-  let phoneButton = document.createElement("div");
-  let phoneButtonContent = document.createTextNode("123");
-  phoneButton.className = "infoBtn";
-  phoneButton.value = "phone";
-  phoneButton.appendChild(phoneButtonContent);
-  phoneButton.onclick = () => changeSelectedInfo(person, currentSlide);
-  //City Button
-  let cityButton = document.createElement("div");
-  let cityButtonContent = document.createTextNode("Adr.");
-  cityButton.className = "infoBtn";
-  cityButton.value = "city";
-  cityButton.appendChild(cityButtonContent);
-  cityButton.onclick = () => changeSelectedInfo(person, currentSlide);
+  let infoButton = document.createElement("div");
+  let infoSpan = document.createElement("span");
+  addBtnVarialbes({ btn: infoButton, span: infoSpan, icon: "i", value: "info", className: "toggleBtn" })
+  // infoSpan.textContent = "i";
+  infoButton.appendChild(infoSpan);
+  infoButton.onclick = () => toggleInfo(person, currentSlide);
+  let contentContainer = document.createElement("div");
+  contentContainer.className = "contentContainer";
+  //Container of the bottom elements
+  let infoContainer = document.createElement("div");
+  infoContainer.className = "infoContainer";
+  infoContainer.appendChild(nameContainer)
+  //If not displaying the "review", show info and buttons about the person
+  if (!person.reviewShowing) {
+    //Info container, phone number, mail etc
+    let personInfoContainer = document.createElement("div");
+    personInfoContainer.classList.add("personInfoContainer");
+    //buttons to select phone number mail etc
+    let buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("buttonContainer");
 
 
+    //Email Button
+    let emailButton = document.createElement("div");
+    let emailButtonSpan = document.createElement("span");
+    addBtnVarialbes({ btn: emailButton, span: emailButtonSpan, icon: "📧", value: "email", className: "infoBtn" })
+    emailButton.onclick = () => changeSelectedInfo(person, currentSlide);
+    emailButton.appendChild(emailButtonSpan);
+    //Phone button
+    let phoneButton = document.createElement("div");
+    let phoneButtonSpan = document.createElement("slide-button");
+    addBtnVarialbes({ btn: phoneButton, span: phoneButtonSpan, icon: "📱", value: "phone", className: "infoBtn" })
+    phoneButton.onclick = () => changeSelectedInfo(person, currentSlide);
+    phoneButton.appendChild(phoneButtonSpan);
+    //City Button
+    let cityButton = document.createElement("div");
+    let cityButtonSpan = document.createElement("span");
+    addBtnVarialbes({ btn: cityButton, span: cityButtonSpan, icon: "🏠", value: "city", className: "infoBtn" })
+    cityButton.onclick = () => changeSelectedInfo(person, currentSlide);
+    cityButton.appendChild(cityButtonSpan);
 
-  switch (person.selectedInfo) {
-    case "email": {
-      infoContent = document.createTextNode(person.email);
-      emailButton.classList.add("selectedBtn");
-      break;
+    let infoContent = "";
+
+    //add styling to the currently selected button
+    switch (person.selectedInfo) {
+      case "email": {
+        infoContent = document.createTextNode(person.email);
+        emailButton.classList.add("selectedBtn");
+        break;
+      }
+      case "phone": {
+        infoContent = document.createTextNode(person.phone);
+        phoneButton.classList.add("selectedBtn");
+        break;
+      }
+      case "city": {
+        infoContent = document.createTextNode(person.location.city + " " + person.location.state);
+        cityButton.classList.add("selectedBtn");
+        break;
+      }
+      default:
+        infoContent = document.createTextNode(person.email);
+        emailButton.classList.add("selectedBtn");
+        break;
     }
-    case "phone": {
-      infoContent = document.createTextNode(person.phone);
-      phoneButton.classList.add("selectedBtn");
-      break;
-    }
-    case "city": {
-      infoContent = document.createTextNode(person.location.city + " " + person.location.state);
-      cityButton.classList.add("selectedBtn");
-      break;
-    }
-    default:
-      infoContent = document.createTextNode(person.email);
-      emailButton.classList.add("selectedBtn");
-      break;
+    //add personInfocontainer to bottomcontainer
+    personInfoContainer.appendChild(infoContent);
+    buttonContainer.appendChild(emailButton);
+    buttonContainer.appendChild(phoneButton);
+    buttonContainer.appendChild(cityButton);
+
+    infoContainer.appendChild(personInfoContainer);
+    infoContainer.appendChild(buttonContainer);
   }
+  else {
+    //Review
+    let reviewContainer = document.createElement("div");
+    let reviewSpan = document.createElement("span");
+    reviewSpan.textContent = reviewTexts[2];
+    reviewContainer.appendChild(reviewSpan);
+    infoContainer.appendChild(reviewContainer);
+  }
+  contentContainer.appendChild(slideImage)
 
-  // let phoneContent = document.createTextNode(person.phone);
-  // let cityContent = document.createTextNode(person.location.city);
-  // let stateContent = document.createTextNode(person.location.state);
+  contentContainer.appendChild(infoContainer)
 
-  slideInfoContainer.appendChild(infoContent);
+  // currentSlide.appendChild(slideImage);
+  // currentSlide.appendChild(infoButton);
+  // currentSlide.appendChild(nameContainer);
+  currentSlide.appendChild(infoButton)
+  currentSlide.appendChild(contentContainer);
 
-
-  slideButtonContainer.appendChild(emailButton);
-  slideButtonContainer.appendChild(phoneButton);
-  slideButtonContainer.appendChild(cityButton);
-
-  currentSlide.appendChild(slideImage)
-  currentSlide.appendChild(slideNameContainer);
-  currentSlide.appendChild(slideInfoContainer);
-  currentSlide.appendChild(slideButtonContainer);
 }
-
+const addBtnVarialbes = (variable) => {
+  variable.span.textContent = variable.icon;
+  variable.span.classList.add("btnText");
+  variable.btn.className = variable.className;
+  variable.btn.value = variable.value;
+}
 const changeSelectedInfo = (person, currentSlide) => {
-  console.log("change selected of ", person)
-  console.log("clicked:", event.current)
-  // let currentSlide = document.getElementById("slider_" + person.id);
   currentSlide.innerHTML = "";
-
-  console.log("clicked:", event.target.value, "person:", person)
   switch (event.target.value) {
     case "email": {
       if (person.selectedInfo !== "email")
@@ -223,9 +251,6 @@ const setShowToFalse = () => {
   }
 }
 
-const resetDotClasses = () => {
-
-}
 const getPersonWithId = (id) => {
   return allPersons.find((person) => {
     return person.id === id;
@@ -254,6 +279,12 @@ const toggleDots = () => {
       currentDot.classList.remove("isActive")
     }
   }
+}
+
+const toggleInfo = (person, currentSlide) => {
+  person.reviewShowing = !person.reviewShowing;
+  toggleSliders(sliderIdAndPos)
+  console.log("person", person, currentSlide)
 }
 const goTo = (dir) => {
   if (dir === 'left') {

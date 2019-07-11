@@ -14,19 +14,16 @@ const generateUsers = () => {
   //call API and create slides and buttons after
   getUsers
     .then(function (data) {
-      // createArrowBtn('left');
       console.log("something", data.results)
       numberOfPersons = data.results.length;
       data.results.map((person, index) => {
         createSlide(person, index);
         createDot(index);
       })
-      // createArrowBtn('right');
-    })
-    .then(function () {
-
     })
 }
+
+//Create a slide, and the person data of each slide
 const createSlide = (person, index) => {
   let currentPerson = {
     name: {first: person.name.first,last: person.name.last},
@@ -49,19 +46,12 @@ const createSlide = (person, index) => {
     currentSlide.className = 'slide';
     addSlideContent(currentSlide, currentPerson);
   }
-
-  //test
-  // let testDiv = document.createElement("div");
-
-  // let testContent = document.getElementById("test");
-  // testDiv.append(person.name.first + " " + person.name.last)
-  // testDiv.className = "test"
-  // testContent.appendChild(testDiv);
-
   //create array object of the data
   allPersons.push(currentPerson);
   sliderIdAndPos.push({ sliderPos: index, sliderId: index })
 }
+
+//create dots to show which persons that are being displayed
 const createDot = (index) => {
   //Parent container for buttons
   let buttonContainer = document.getElementById('dotContainer');
@@ -77,21 +67,7 @@ const createDot = (index) => {
   buttonContainer.appendChild(newButton);
 }
 
-// const createArrowBtn = (dir) => {
-//   let buttonContainer = document.getElementById('buttonContainer');
-//   let dirButton = document.createElement("div");
-//   dirButton.className = 'arrowButtons';
-//   let dirButtonContent = '';
-//   dirButton.onclick = () => goTo(dir);
-
-//   dir === 'left' ?
-//     dirButton.classList.add("leftButton") :
-//     dirButton.classList.add("rightButton");
-
-//   // dirButton.appendChild(dirButtonContent);
-//   buttonContainer.appendChild(dirButton);
-// }
-
+//dynamically add stuff to the slides
 const addSlideContent = (currentSlide, person) => {
   //Container for slider name
   let firstName = person.name.first.charAt(0).toUpperCase() + person.name.first.slice(1);
@@ -99,7 +75,6 @@ const addSlideContent = (currentSlide, person) => {
   let nameContainer = document.createElement("span");
   nameContainer.textContent = firstName + " " + lastName;
   nameContainer.className = 'slideName';
-  // nameContainer.appendChild(slideContent);
   //Slider image
 
   let imageDiv = document.createElement("div");
@@ -112,7 +87,6 @@ const addSlideContent = (currentSlide, person) => {
   let toggleButton = document.createElement("div");
   let infoSpan = document.createElement("span");
   addBtnVarialbes({ btn: toggleButton, span: infoSpan, icon: "i", value: "info", className: "toggleBtn" })
-  // infoSpan.textContent = "i";
   toggleButton.appendChild(infoSpan);
   toggleButton.onclick = () => toggleInfo(person, currentSlide);
   let contentContainer = document.createElement("div");
@@ -200,19 +174,17 @@ const addSlideContent = (currentSlide, person) => {
   contentContainer.appendChild(imageDiv)
 
   contentContainer.appendChild(infoContainer)
-
-  // currentSlide.appendChild(slideImage);
-  // currentSlide.appendChild(toggleButton);
-  // currentSlide.appendChild(nameContainer);
   currentSlide.appendChild(contentContainer);
-
 }
+//Add icon, class, value to buttons
 const addBtnVarialbes = (variable) => {
   variable.span.textContent = variable.icon;
   variable.span.classList.add("btnText");
   variable.btn.className = variable.className;
   variable.btn.value = variable.value;
 }
+
+//update "state" object with what was selected and update the slide  
 const changeSelectedInfo = (person, currentSlide) => {
   currentSlide.innerHTML = "";
   switch (event.target.value) {
@@ -238,7 +210,7 @@ const changeSelectedInfo = (person, currentSlide) => {
   }
   addSlideContent(currentSlide, person)
 }
-
+//show the slides that are requested
 const toggleSliders = (sliders) => {
   for (let i = 0; i < 3; i++) {
     let slider = sliders[i].sliderPos;
@@ -247,24 +219,22 @@ const toggleSliders = (sliders) => {
 
     let person = getPersonWithId(slider)
     addSlideContent(currentSlide, person);
-    // let textContent = document.createTextNode(person.name);
     person.showing = true;
-    // currentSlide.appendChild(textContent);
-
   }
 }
-
+ //update "state" to not show the slides
 const setShowToFalse = () => {
   for (let i = 0; i < allPersons.length; i++) {
     allPersons[i].showing = false;
   }
 }
-
+//find person in data object to display
 const getPersonWithId = (id) => {
   return allPersons.find((person) => {
     return person.id === id;
   })
 }
+//Update dots to show which persons are being displayed
 const toggleDots = () => {
   let activePersons = allPersons.filter((person) => {
     return person.showing
@@ -272,7 +242,6 @@ const toggleDots = () => {
   let inactivePersons = allPersons.filter((person) => {
     return !person.showing
   })
-
 
   for (let i = 0; i < activePersons.length; i++) {
     let currentDot = document.getElementById("dot_" + activePersons[i].id);
@@ -290,11 +259,13 @@ const toggleDots = () => {
   }
 }
 
+//hide / show the information of a slide
 const toggleInfo = (person, currentSlide) => {
   person.reviewShowing = !person.reviewShowing;
   toggleSliders(sliderIdAndPos)
-  console.log("person", person, currentSlide)
 }
+
+//When a user clicks right or left arrow
 const goTo = (dir) => {
   if (dir === 'left') {
     for (let i = 0; i < sliderIdAndPos.length; i++) {
@@ -316,11 +287,9 @@ const goTo = (dir) => {
       }
     }
   }
+ 
   setShowToFalse();
   toggleSliders(sliderIdAndPos);
-  console.log("sliderIdAndPos:", sliderIdAndPos)
-  console.log("allPersons:", allPersons)
-  console.log("go to:", dir)
   toggleDots();
 }
 

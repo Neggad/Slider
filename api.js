@@ -8,6 +8,16 @@ const getUsers = new Promise(
         // console.log(JSON.stringify(myJson));
         resolve(myJson)
       })
+      .catch((error) => {
+        console.log(error.message)
+        let container = document.body;
+        let errorMsg = document.createElement("h2");
+        errorMsg.classList.add("errorMsg");
+        errorMsg.textContent = "Error Message: " + error.message;
+        container.appendChild(errorMsg);
+        // container.textContent = error.message;
+        }
+      )
   }
 )
 

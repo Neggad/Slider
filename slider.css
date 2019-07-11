@@ -7,7 +7,7 @@
 body{
   display:flex;
   flex-direction: column;
-  font-size: 10px;
+  font-size: 9px;
 }
 .moduleContainer{
   width:100%;
@@ -29,24 +29,21 @@ body{
   margin:10px;
   font-family: "Courier";
 }
-.infoBtn.selectedBtn{
-  color:rgb(255, 142, 142);
-  background-color: whitesmoke;
-  border-radius: 20px;
-  border-bottom: 1px solid grey;
-  border-right:1px solid grey;
-  font-weight: bold;
-  text-align: center;
-}
-.slideImg{
+
+.imgDiv img{
   border-radius: 50px;
   max-width:60px;
-    height:auto;
+    /* height:auto; */
+  }
+  .imgDiv{
+    margin:4px;
+    position: relative;
 }
 .slideName{
   font-weight: bold;
   font-size: 11px;
-  text-align: left;
+  text-align: center;
+  width:90%;
 }
 #sliderContainer{
   display:flex;
@@ -61,44 +58,58 @@ body{
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width:100%;
+  width:90%;
   height: 50px;
+}
+
+.infoBtn.selectedBtn{
+  background-color: rgb(231, 255, 236);
 }
 .infoBtn{
   display:flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-radius: 15px;
   margin:0 10px;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 30px;
+  min-height: 30px;
+  border-bottom: 1px solid rgb(165, 184, 165);
+  border-right:1px solid rgb(165, 184, 165);
   cursor: pointer;
   text-align: center;
   color: rgb(197, 197, 197);
 }
+.toggleBtn.selectedBtn{
+    background-color:rgb(231, 255, 236);;  
+}
 .toggleBtn{
-  
-    align-self:flex-start;
-    min-width: 16px;
-    min-height: 16px;
-    cursor: pointer;
-    text-align: center;
-    font-weight: bold;
-    color: black;
-   
-      width: 0; 
-      height: 0; 
-
-  
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position:absolute;
+  right:3px;
+  bottom:3px;
+  min-width: 16px;
+  min-height: 16px;
+  border-radius:8px;
+  border: 1px solid rgb(165, 184, 165);
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  color: black;
+  background-color:white;  
 }
 .btnText{
   text-align: center;
   pointer-events: none;
 }
 .personInfoContainer{
-  width:100%;
+  width:90%;
   height: 30px;
   text-align: center;
+  font-size:10px;
   font-family: "Courier New";
 }
 .infoContainer{
@@ -106,6 +117,12 @@ body{
   display:flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+.reviewContainer{
+  width:90%;
+  text-align: center;
+  padding: 3px;
 }
 .contentContainer{
   flex-grow: 2;
@@ -114,12 +131,7 @@ body{
   justify-content: center;
   align-items: center;
 }
-.buttonContainer{
-  /* width:90%; */
-  display:flex;
-  flex-direction: row;
-  justify-content: center;
-}
+
 .arrowButtons{
   background-color: white;
   margin:2px;
@@ -128,8 +140,8 @@ body{
 #leftButton{
   width: 0; 
   height: 0; 
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent; 
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent; 
   border-right:20px solid white; 
   cursor: pointer;
   margin:10px;
@@ -137,8 +149,8 @@ body{
 #rightButton{
   width: 0; 
   height: 0; 
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
   border-left: 20px solid white;
   cursor: pointer;
   margin:10px;
@@ -149,7 +161,7 @@ body{
   justify-content: center;
 }
 .allDotButtons{
-  background-color: white;
+  
   margin:2px;
   width:6px;
   height:6px;
@@ -166,19 +178,11 @@ body{
 .invisible{
   display:none;
 }
-.redTest{
-  background-color: red;
-}
-.test{
-  border: 1px solid orange;
-  width: 100px;
-}
 .isActive{
-  background-color: white;
+  background-color: rgb(231, 255, 236);;
 }
 .isInactive{
-  
-  background-color: rgb(180, 180, 180);
+  background-color: rgb(212, 212, 212);
 }
 @media only screen and (min-width: 961px) {
   body{
@@ -199,6 +203,13 @@ body{
     width:90%;
     overflow:hidden;
   }
+  .contentContainer{
+    /* flex-grow: 2; */
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   .slide{
     width: 33.33%;
     height: 300px;
@@ -211,10 +222,38 @@ body{
     margin:10px;
     font-family: "Courier";
   }
-  .slideImg{
+  .imgDiv img{
     border-radius: 70px;
     max-width:140px;
-      height:auto;
+      /* height:auto; */
+    }
+  .imgDiv{
+      margin:4px;
+      position: relative;
+  }
+  .toggleBtn.selectedBtn{
+    background-color:rgb(195, 231, 200);  
+}
+  .toggleBtn{
+    /* align-self:flex-start; */
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    position:absolute;
+    right:3px;
+    bottom:3px;
+    min-width: 30px;
+    min-height: 30px;
+    border-radius:15px;
+    border: 1px solid rgb(165, 184, 165);
+    cursor: pointer;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background-color:rgb(126, 190, 136);  
   }
   .slideName{
     font-weight: bold;

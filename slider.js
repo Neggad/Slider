@@ -29,7 +29,7 @@ const generateUsers = () => {
 }
 const createSlide = (person, index) => {
   let currentPerson = {
-    name: person.name.first + " " + person.name.last,
+    name: {first: person.name.first,last: person.name.last},
     img: {
       large: person.picture.large,
       medium: person.picture.medium,
@@ -94,23 +94,27 @@ const createDot = (index) => {
 
 const addSlideContent = (currentSlide, person) => {
   //Container for slider name
+  let firstName = person.name.first.charAt(0).toUpperCase() + person.name.first.slice(1);
+  let lastName = person.name.last.charAt(0).toUpperCase() + person.name.last.slice(1);
   let nameContainer = document.createElement("span");
-  let slideContent = document.createTextNode(person.name);
+  nameContainer.textContent = firstName + " " + lastName;
   nameContainer.className = 'slideName';
-  nameContainer.appendChild(slideContent);
+  // nameContainer.appendChild(slideContent);
   //Slider image
 
+  let imageDiv = document.createElement("div");
+  imageDiv.className = "imgDiv";
   let slideImage = document.createElement("img");
   slideImage.src = person.img.large;
-  slideImage.className = "slideImg";
+  imageDiv.appendChild(slideImage);
   //info toggle button
 
-  let infoButton = document.createElement("div");
+  let toggleButton = document.createElement("div");
   let infoSpan = document.createElement("span");
-  addBtnVarialbes({ btn: infoButton, span: infoSpan, icon: "i", value: "info", className: "toggleBtn" })
+  addBtnVarialbes({ btn: toggleButton, span: infoSpan, icon: "i", value: "info", className: "toggleBtn" })
   // infoSpan.textContent = "i";
-  infoButton.appendChild(infoSpan);
-  infoButton.onclick = () => toggleInfo(person, currentSlide);
+  toggleButton.appendChild(infoSpan);
+  toggleButton.onclick = () => toggleInfo(person, currentSlide);
   let contentContainer = document.createElement("div");
   contentContainer.className = "contentContainer";
   //Container of the bottom elements
@@ -126,6 +130,8 @@ const addSlideContent = (currentSlide, person) => {
     let buttonContainer = document.createElement("div");
     buttonContainer.classList.add("buttonContainer");
 
+    //Add selected indication
+    toggleButton.classList.add("selectedBtn");
 
     //Email Button
     let emailButton = document.createElement("div");
@@ -161,7 +167,7 @@ const addSlideContent = (currentSlide, person) => {
         break;
       }
       case "city": {
-        infoContent = document.createTextNode(person.location.city + " " + person.location.state);
+        infoContent = document.createTextNode(person.location.city.charAt(0).toUpperCase() + person.location.city.slice(1));
         cityButton.classList.add("selectedBtn");
         break;
       }
@@ -175,26 +181,29 @@ const addSlideContent = (currentSlide, person) => {
     buttonContainer.appendChild(emailButton);
     buttonContainer.appendChild(phoneButton);
     buttonContainer.appendChild(cityButton);
-
-    infoContainer.appendChild(personInfoContainer);
     infoContainer.appendChild(buttonContainer);
+    infoContainer.appendChild(personInfoContainer);
+   
   }
   else {
     //Review
     let reviewContainer = document.createElement("div");
     let reviewSpan = document.createElement("span");
+    //remove selected indication on toggle button
+    toggleButton.classList.remove("selectedBtn");
+    reviewContainer.classList.add("reviewContainer")
     reviewSpan.textContent = reviewTexts[2];
     reviewContainer.appendChild(reviewSpan);
     infoContainer.appendChild(reviewContainer);
   }
-  contentContainer.appendChild(slideImage)
+  imageDiv.appendChild(toggleButton)
+  contentContainer.appendChild(imageDiv)
 
   contentContainer.appendChild(infoContainer)
 
   // currentSlide.appendChild(slideImage);
-  // currentSlide.appendChild(infoButton);
+  // currentSlide.appendChild(toggleButton);
   // currentSlide.appendChild(nameContainer);
-  currentSlide.appendChild(infoButton)
   currentSlide.appendChild(contentContainer);
 
 }

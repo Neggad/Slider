@@ -1,4 +1,15 @@
 /* MOBILE FIRST */
+
+/* MAIN STYLES */
+button{
+  margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+  vertical-align: baseline;
+  background-color:white;
+}
 header{
   margin:5px 0;
 }
@@ -66,12 +77,12 @@ body{
   max-width:60px;
   }
 .imgDiv{
-    margin:4px;
-    position: relative;
+  margin:4px;
+  position: relative;
 }
 .toggleBtn.selectedBtn{
-    background-color:rgb(231, 255, 236);
-    color: rgb(126, 190, 136); 
+  background-color:rgb(231, 255, 236);
+  color: rgb(126, 190, 136); 
 }
 .toggleBtn{
   display:flex;
@@ -84,6 +95,7 @@ body{
   min-width: 16px;
   min-height: 16px;
   border-radius:8px;
+  border:none;
   cursor: pointer;
   font-family: "Bitter";
   text-align: center;
@@ -203,7 +215,7 @@ body{
   border-radius: 3px;
 }
 #dotContainer{
-    display:flex;
+  display:flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -291,6 +303,7 @@ body{
     min-width: 30px;
     min-height: 30px;
     border-radius:15px;
+    border:none;
     cursor: pointer;
     font-family: 'Bitter';
     text-align: center;

@@ -172,6 +172,7 @@ body{
   text-align: center;
 }
 .btnText{
+  font-size:14px;
   text-align: center;
   pointer-events: none;
 }
@@ -322,6 +323,15 @@ body{
     text-align: center;
     font-size:13px;
   }
+  .infoBtn{
+    border-radius: 20px;
+    margin:0 10px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+  .btnText{
+    font-size:18px;
+  }
   .quoteIconDiv{
     top:-25px;
     left: -10px;
@@ -351,4 +361,5 @@ body{
   cursor: pointer;
   margin:10px;
 }
+
 }

@@ -26,7 +26,7 @@ const generateUsers = () => {
 //Create a slide, and the person data of each slide
 const createSlide = (person, index) => {
   let currentPerson = {
-    name: {first: person.name.first,last: person.name.last},
+    name: { first: person.name.first, last: person.name.last },
     img: {
       large: person.picture.large,
       medium: person.picture.medium,
@@ -39,6 +39,7 @@ const createSlide = (person, index) => {
     showing: index < 3 ? true : false,
     selectedInfo: "email",
     reviewShowing: true,
+    reviewText: reviewTexts[Math.floor(Math.random() * reviewTexts.length)]
   };
 
   if (index < 3) {
@@ -80,11 +81,13 @@ const addSlideContent = (currentSlide, person) => {
   let imageDiv = document.createElement("div");
   imageDiv.className = "imgDiv";
   let slideImage = document.createElement("img");
+  slideImage.alt = "Image of " + firstName + " " + lastName;
   slideImage.src = person.img.large;
   imageDiv.appendChild(slideImage);
   //info toggle button
 
   let toggleButton = document.createElement("div");
+  toggleButton.tabIndex = 0;
   let infoSpan = document.createElement("span");
   addBtnVarialbes({ btn: toggleButton, span: infoSpan, icon: "i", value: "info", className: "toggleBtn" })
   toggleButton.appendChild(infoSpan);
@@ -157,16 +160,24 @@ const addSlideContent = (currentSlide, person) => {
     buttonContainer.appendChild(cityButton);
     infoContainer.appendChild(buttonContainer);
     infoContainer.appendChild(personInfoContainer);
-   
+
   }
   else {
     //Review
     let reviewContainer = document.createElement("div");
     let reviewSpan = document.createElement("span");
+    let quoteIconDiv = document.createElement("div");
+    let quoteIcon = document.createElement("span");
+    quoteIcon.classList.add("quoteIcon");
+    quoteIconDiv.appendChild(quoteIcon);
     //remove selected indication on toggle button
     toggleButton.classList.remove("selectedBtn");
+    quoteIconDiv.classList.add("quoteIconDiv");
+    quoteIcon.textContent = '"';
+
     reviewContainer.classList.add("reviewContainer")
-    reviewSpan.textContent = reviewTexts[2];
+    reviewContainer.appendChild(quoteIconDiv);
+    reviewSpan.textContent = person.reviewText;
     reviewContainer.appendChild(reviewSpan);
     infoContainer.appendChild(reviewContainer);
   }
@@ -222,7 +233,7 @@ const toggleSliders = (sliders) => {
     person.showing = true;
   }
 }
- //update "state" to not show the slides
+//update "state" to not show the slides
 const setShowToFalse = () => {
   for (let i = 0; i < allPersons.length; i++) {
     allPersons[i].showing = false;
@@ -287,7 +298,7 @@ const goTo = (dir) => {
       }
     }
   }
- 
+
   setShowToFalse();
   toggleSliders(sliderIdAndPos);
   toggleDots();

@@ -5,7 +5,6 @@ const getUsers = new Promise(
         return response.json();
       })
       .then(function (myJson) {
-        // console.log(JSON.stringify(myJson));
         resolve(myJson)
       })
       .catch((error) => {
@@ -15,8 +14,7 @@ const getUsers = new Promise(
         errorMsg.classList.add("errorMsg");
         errorMsg.textContent = "Error Message: " + error.message;
         container.appendChild(errorMsg);
-        // container.textContent = error.message;
-        }
+      }
       )
   }
 )
